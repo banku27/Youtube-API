@@ -14,7 +14,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.black12,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -33,19 +33,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     Flexible(
                       flex: 1,
-                      child: Image.asset(
-                        'assets/firebase_logo.png',
-                        height: 160,
+                      child: Image.network(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsuGyCVmkYlf2ndDdZLqc9LdyZ3rl1PVNQvw&usqp=CAU',
+                        height: 120,
+                        width: 160,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'FlutterFire',
-                      style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 40,
-                      ),
-                    ),
                     const Text(
                       'Authentication',
                       style: TextStyle(
@@ -62,7 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (snapshot.hasError) {
                     return const Text('Error initializing Firebase');
                   } else if (snapshot.connectionState == ConnectionState.done) {
-                    return GoogleSignInButton();
+                    return const GoogleSignInButton();
                   }
                   return const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(

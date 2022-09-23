@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_api/authentication/authentication.dart';
 import 'package:youtube_api/models/channel_model.dart';
 import 'package:youtube_api/models/video_model.dart';
+import 'package:youtube_api/screens/sign_in_screen.dart';
 import 'package:youtube_api/screens/video_screen.dart';
 import 'package:youtube_api/services/api_services.dart';
 
@@ -23,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _initChannel() async {
     Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UC6Dy0rQ6zDnQuHQ1EeErGUA');
+        .fetchChannel(channelId: 'UChz5aEi3dfrDVC8-YJsMUDA');
     setState(() {
       _channel = channel;
     });
@@ -142,11 +144,48 @@ class _HomeScreenState extends State<HomeScreen> {
     _isLoading = false;
   }
 
+  bool _isSigningOut = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('YouTube API'),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () async {
+                  _isSigningOut
+                      ? const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : setState(() {
+                          _isSigningOut = true;
+                        });
+                  await Authentication.signOut(context: context);
+                  setState(() {
+                    _isSigningOut = false;
+                  });
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()));
+                },
+                icon: const Icon(Icons.logout),
+              ),
+              const Text(
+                'Log out',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              )
+            ],
+          )
+        ],
       ),
       body: _channel != null
           ? NotificationListener<ScrollNotification>(
